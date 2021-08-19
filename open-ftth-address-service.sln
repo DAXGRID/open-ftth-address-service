@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenFTTH.Address.API", "OpenFTTH.Address.API\OpenFTTH.Address.API.csproj", "{B869EE72-B920-44A8-BB08-49F3A1848505}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenFTTH.Address.Business", "OpenFTTH.Address.Business\OpenFTTH.Address.Business.csproj", "{79838D76-5387-410B-95B8-B52312CAEE29}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenFTTH.Address.Tests", "OpenFTTH.Address.Tests\OpenFTTH.Address.Tests.csproj", "{1F64B612-6C98-4D19-9EC2-765530A73A5E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B869EE72-B920-44A8-BB08-49F3A1848505}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B869EE72-B920-44A8-BB08-49F3A1848505}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B869EE72-B920-44A8-BB08-49F3A1848505}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B869EE72-B920-44A8-BB08-49F3A1848505}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79838D76-5387-410B-95B8-B52312CAEE29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79838D76-5387-410B-95B8-B52312CAEE29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79838D76-5387-410B-95B8-B52312CAEE29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79838D76-5387-410B-95B8-B52312CAEE29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F64B612-6C98-4D19-9EC2-765530A73A5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F64B612-6C98-4D19-9EC2-765530A73A5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F64B612-6C98-4D19-9EC2-765530A73A5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F64B612-6C98-4D19-9EC2-765530A73A5E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0514012F-2DC7-4585-A883-8D2007253720}
+	EndGlobalSection
+EndGlobal
