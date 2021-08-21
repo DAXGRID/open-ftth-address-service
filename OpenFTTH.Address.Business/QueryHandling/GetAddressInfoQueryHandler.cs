@@ -24,7 +24,9 @@ namespace OpenFTTH.Address.Business.QueryHandling
 
         public Task<Result<GetAddressInfoResult>> HandleAsync(GetAddressInfo query)
         {
-            var addressSearchResult = _addressRepository.FetchAccessAndUnitAddressesByIds(query.AccessOrUnitAddressIds);
+            var addressIds = RemoveDublicatedIds(query.AccessOrUnitAddressIds);
+
+            var addressSearchResult = _addressRepository.FetchAccessAndUnitAddressesByIds(addressIds);
 
             List<AddressHit> hits = new();
 
@@ -54,7 +56,17 @@ namespace OpenFTTH.Address.Business.QueryHandling
             return Task.FromResult(result);
         }
 
+        private static Guid[] RemoveDublicatedIds(Guid[] accessOrUnitAddressIds)
+        {
+            HashSet<Guid> result = new();
+        
+            foreach (var addressId in accessOrUnitAddressIds)
+            {
+                if (!result.Contains(addressId))
+                    result.Add(addressId);
+            }
 
-
+            return result.ToArray();
+        }
     }
 }
