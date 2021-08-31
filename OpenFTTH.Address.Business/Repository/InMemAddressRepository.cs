@@ -143,5 +143,10 @@ namespace OpenFTTH.Address.Business.Repository
         {
             result.Add((Guid.Empty, _accessAddressesById[unitAddress.AccessAddressId]));
         }
+
+        public IEnumerable<(double, IAddress)> FetchNearestAccessAndUnitAddresses(double x, double y, int srid, int maxHits)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

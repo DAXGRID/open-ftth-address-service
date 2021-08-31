@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,6 +37,11 @@ namespace OpenFTTH.Address.Business.Repository
             {
                 yield return (address.Item1, address.Item2);
             }
+        }
+
+        public IEnumerable<(double, IAddress)> FetchNearestAccessAndUnitAddresses(double x, double y, int srid, int maxHits)
+        {
+            return FindNearestAddresses(x, y, srid, maxHits);
         }
 
         private IEnumerable<(Guid, IAddress)> FindAccessAddressesAndRelatedUnitAddresses(Guid[] accessOrUnitAddressIds)
@@ -132,6 +138,58 @@ namespace OpenFTTH.Address.Business.Repository
             sw.Stop();
 
             return addressHitById.Values;
+        }
+
+        private IEnumerable<(double, IAddress)> FindNearestAddresses(double x, double y, int srid, int maxHits)
+        {
+            var xStr = x.ToString(CultureInfo.InvariantCulture);
+            var yStr = y.ToString(CultureInfo.InvariantCulture);
+
+            using var conn = GetConnection();
+
+            using var cmd = conn.CreateCommand();
+
+            cmd.CommandText = @"
+                SELECT 
+                  aa.id,
+                  ST_Distance(aa.coord, ST_Transform('SRID=" + srid + ";POINT(" + xStr + " " + yStr + @")'::geometry, 25832)) AS dist
+                FROM
+                  location.official_access_address aa
+                ORDER BY
+                  aa.coord <->ST_Transform('SRID=" + srid + ";POINT(" + xStr + " " + yStr + @")'::geometry, 25832)
+                LIMIT " + maxHits;
+
+            using var rdr = cmd.ExecuteReader();
+
+            Dictionary<Guid, double> accessAddressDistanceById = new();
+
+            while (rdr.Read())
+            {
+                var accessAddressId = rdr.GetGuid(0);
+                var distance = rdr.GetDouble(1);
+
+                accessAddressDistanceById.Add(accessAddressId, distance);
+            }
+
+            if (accessAddressDistanceById.Count == 0)
+                return Array.Empty<(double, IAddress)>();
+
+            var addresses = FindAccessAddressesAndRelatedUnitAddresses(accessAddressDistanceById.Keys.ToArray());
+
+            Dictionary<Guid, (double, IAddress)> result = new();
+
+            foreach (var addressHit in addresses)
+            {
+                if (!result.ContainsKey(addressHit.Item2.Id))
+                {
+                    if (addressHit.Item2 is AccessAddress)
+                        result.Add(addressHit.Item2.Id, (accessAddressDistanceById[addressHit.Item2.Id], addressHit.Item2));
+                    else
+                        result.Add(addressHit.Item2.Id, (0, addressHit.Item2));
+                }
+            }
+
+            return result.Values;
         }
 
         private IEnumerable<(Guid, IAddress)> FindUnitAddressesAndRelatedAccessAddress(Guid[] accessOrUnitAddressIds)

@@ -1,6 +1,7 @@
 using FluentAssertions;
 using OpenFTTH.Address.API.Model;
 using OpenFTTH.Address.Business;
+using OpenFTTH.Address.Business.Repository;
 using System;
 using System.Linq;
 using Xunit;
@@ -110,5 +111,26 @@ namespace OpenFTTH.Address.Tests
             // Assert
             result.Count.Should().Be(4); // 2 access addresses + 2 belonging unit addresses
         }
+
+        [Fact]
+        public void QueryLerbjergAddresses_ShouldReturnBothAccessAndUnitAddresses()
+        {
+            if (!(_addressRepository is PostgresAddressRepository))
+                return;
+
+            var keys = new Guid[] {
+                Guid.Parse("0a3f50c3-86a2-32b8-e044-0003ba298018"), // Lerbjerg 17 enh id
+                Guid.Parse("0a3f50c3-86a4-32b8-e044-0003ba298018"), // Lerbjerg 19 enh id
+                Guid.Parse("0a3f50c3-86a5-32b8-e044-0003ba298018") // Lerbjerg 21 enh id
+            };
+
+            var result = _addressRepository.FetchAccessAndUnitAddressesByIds(keys).ToList();
+
+            // Assert
+            result.Count.Should().Be(6);
+        }
+
+
+        
     }
 }

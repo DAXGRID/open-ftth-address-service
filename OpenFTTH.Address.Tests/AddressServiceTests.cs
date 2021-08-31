@@ -2,6 +2,8 @@
 using FluentResults;
 using OpenFTTH.Address.API.Model;
 using OpenFTTH.Address.API.Queries;
+using OpenFTTH.Address.Business;
+using OpenFTTH.Address.Business.Repository;
 using OpenFTTH.CQRS;
 using System;
 using System.Collections.Generic;
@@ -15,10 +17,13 @@ namespace OpenFTTH.Address.Tests
     public class AddressServiceTests
     {
         private readonly IQueryDispatcher _queryDispatcher;
+        private readonly IAddressRepository _addressRepository;
 
-        public AddressServiceTests(IQueryDispatcher queryDispatcher)
+
+        public AddressServiceTests(IQueryDispatcher queryDispatcher, IAddressRepository addressRepository)
         {
             _queryDispatcher = queryDispatcher;
+            _addressRepository = addressRepository;
         }
 
         [Fact]
@@ -103,8 +108,24 @@ namespace OpenFTTH.Address.Tests
 
             engumAccessAddress.RoadName.Should().StartWith("Engum"); 
             engumAccessAddress.HouseHumber.Should().Be("3");
+        }
 
 
+        [Fact]
+        public async void QueryNearest_ShouldSucceed()
+        {
+            if (!(_addressRepository is PostgresAddressRepository))
+                return;
+
+            var getAddressInfoQuery = new GetAddressInfo(9.658086, 55.742261, 4326, 3);
+
+            var result = await _queryDispatcher.HandleAsync<GetAddressInfo, Result<GetAddressInfoResult>>(getAddressInfoQuery);
+
+            // Assert
+            result.IsSuccess.Should().BeTrue();
+
+            result.Value.AddressHits.Count().Should().Be(3);
+        
         }
     }
 }
