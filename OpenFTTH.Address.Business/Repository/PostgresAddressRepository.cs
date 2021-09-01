@@ -50,7 +50,7 @@ namespace OpenFTTH.Address.Business.Repository
 
             var accessOrUnitAddressIdsLookup = accessOrUnitAddressIds.ToHashSet<Guid>();
 
-            Dictionary<Guid,(Guid,IAddress)> addressHitById = new();
+            Dictionary<Guid, (Guid, IAddress)> addressHitById = new();
 
             Stopwatch sw = new();
             sw.Start();
@@ -103,7 +103,7 @@ namespace OpenFTTH.Address.Business.Repository
                         unitAddressIds: rdr.IsDBNull(11) ? Array.Empty<Guid>() : new Guid[] { rdr.GetGuid(11) }
                     )
                     {
-                        HouseHumber = rdr.IsDBNull(3) ? null : rdr.GetString(3),
+                        HouseNumber = rdr.IsDBNull(3) ? null : rdr.GetString(3),
                         PostDistrictCode = rdr.IsDBNull(4) ? null : rdr.GetString(4),
                         PostDistrict = rdr.IsDBNull(5) ? null : rdr.GetString(5),
                         ExternalId = rdr.IsDBNull(6) ? null : Guid.Parse(rdr.GetString(6)),
@@ -112,9 +112,9 @@ namespace OpenFTTH.Address.Business.Repository
                         TownName = rdr.IsDBNull(9) ? null : rdr.GetString(9),
                         MunicipalCode = rdr.IsDBNull(10) ? null : rdr.GetString(10),
                     };
-                    
+
                     if (accessOrUnitAddressIdsLookup.Contains(aa.Id))
-                        addressHitById.Add(accessAddressId, (aa.Id,aa));
+                        addressHitById.Add(accessAddressId, (aa.Id, aa));
                     else if (aa.ExternalId != null && accessOrUnitAddressIdsLookup.Contains(aa.ExternalId.Value))
                         addressHitById.Add(accessAddressId, (aa.ExternalId.Value, aa));
                 }
@@ -249,7 +249,7 @@ namespace OpenFTTH.Address.Business.Repository
                         unitAddressIds: rdr.IsDBNull(11) ? Array.Empty<Guid>() : new Guid[] { rdr.GetGuid(11) }
                     )
                     {
-                        HouseHumber = rdr.IsDBNull(3) ? null : rdr.GetString(3),
+                        HouseNumber = rdr.IsDBNull(3) ? null : rdr.GetString(3),
                         PostDistrictCode = rdr.IsDBNull(4) ? null : rdr.GetString(4),
                         PostDistrict = rdr.IsDBNull(5) ? null : rdr.GetString(5),
                         ExternalId = rdr.IsDBNull(6) ? null : Guid.Parse(rdr.GetString(6)),

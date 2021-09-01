@@ -7,7 +7,7 @@ namespace OpenFTTH.Address.API.Model
     {
         public Guid Id { get; }
         public Point AddressPoint { get; }
-        public string? HouseHumber { get; init; }
+        public string? HouseNumber { get; init; }
         public string? PostDistrictCode { get; init; }
         public string? PostDistrict { get; init; }
         public Guid? ExternalId { get; init; }
