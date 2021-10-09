@@ -49,7 +49,7 @@ namespace OpenFTTH.Address.Tests
 
             var accessAddress = result.Value.AccessAddresses[addressHit.RefId];
             accessAddress.RoadName.Should().StartWith("Engum");
-            accessAddress.HouseHumber.Should().Be("3");
+            accessAddress.HouseNumber.Should().Be("3");
             accessAddress.PostDistrict.Should().StartWith("Vejle");
             accessAddress.PostDistrictCode.Should().Be("7120");
 
@@ -106,8 +106,8 @@ namespace OpenFTTH.Address.Tests
             var engumUnitAddress = result.Value.UnitAddresses[engumHit.RefId];
             var engumAccessAddress = result.Value.AccessAddresses[engumUnitAddress.AccessAddressId];
 
-            engumAccessAddress.RoadName.Should().StartWith("Engum"); 
-            engumAccessAddress.HouseHumber.Should().Be("3");
+            engumAccessAddress.RoadName.Should().StartWith("Engum");
+            engumAccessAddress.HouseNumber.Should().Be("3");
         }
 
 
@@ -125,7 +125,7 @@ namespace OpenFTTH.Address.Tests
             result.IsSuccess.Should().BeTrue();
 
             result.Value.AddressHits.Count().Should().Be(3);
-        
+
         }
     }
 }

@@ -30,7 +30,7 @@ namespace OpenFTTH.Address.Tests
             var accessAddress = result.Find(r => r.Item1 == key).Item2 as AccessAddress;
 
             accessAddress.RoadName.Should().StartWith("Engum");
-            accessAddress.HouseHumber.Should().Be("3");
+            accessAddress.HouseNumber.Should().Be("3");
             accessAddress.UnitAddressIds.Count().Should().Be(1);
         }
 
@@ -131,6 +131,6 @@ namespace OpenFTTH.Address.Tests
         }
 
 
-        
+
     }
 }
