@@ -80,7 +80,7 @@ namespace OpenFTTH.Address.Business.Repository
                 LEFT OUTER JOIN
                     location.official_unit_address ua on ua.access_address_id = aa.id
                 WHERE 
-                    aa.id = ANY(:guid_ids) or aa.access_address_external_id = ANY(:str_ids)";
+                    (aa.id = ANY(:guid_ids) or aa.access_address_external_id = ANY(:str_ids)) and aa.coord is not null";
 
             cmd.Parameters.Add("guid_ids", NpgsqlDbType.Array | NpgsqlDbType.Uuid).Value = accessOrUnitAddressIds;
             cmd.Parameters.Add("str_ids", NpgsqlDbType.Array | NpgsqlDbType.Varchar).Value = accessOrUnitAddressIds.Select(u => u.ToString()).ToArray();
@@ -155,6 +155,8 @@ namespace OpenFTTH.Address.Business.Repository
                   ST_Distance(aa.coord, ST_Transform('SRID=" + srid + ";POINT(" + xStr + " " + yStr + @")'::geometry, 25832)) AS dist
                 FROM
                   location.official_access_address aa
+                WHERE
+                   aa.coord is not null
                 ORDER BY
                   aa.coord <->ST_Transform('SRID=" + srid + ";POINT(" + xStr + " " + yStr + @")'::geometry, 25832)
                 LIMIT " + maxHits;
@@ -228,7 +230,7 @@ namespace OpenFTTH.Address.Business.Repository
                 LEFT OUTER JOIN
                     location.official_access_address aa on aa.id = ua.access_address_id
                 WHERE 
-                    aa.id is not null and (ua.id = ANY(:guid_ids) or ua.unit_address_external_id = ANY(:str_ids))";
+                    aa.id is not null and aa.coord is not null and (ua.id = ANY(:guid_ids) or ua.unit_address_external_id = ANY(:str_ids))";
 
             cmd.Parameters.Add("guid_ids", NpgsqlDbType.Array | NpgsqlDbType.Uuid).Value = accessOrUnitAddressIds;
             cmd.Parameters.Add("str_ids", NpgsqlDbType.Array | NpgsqlDbType.Varchar).Value = accessOrUnitAddressIds.Select(u => u.ToString()).ToArray();

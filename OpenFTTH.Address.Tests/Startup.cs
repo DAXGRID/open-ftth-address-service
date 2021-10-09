@@ -10,7 +10,7 @@ namespace OpenFTTH.Address.Tests
 {
     public class Startup
     {
-        private static string _connectionString = Environment.GetEnvironmentVariable("xtest_address_store_connection");
+        private static string _connectionString = Environment.GetEnvironmentVariable("test_address_store_connection");
 
         public void ConfigureServices(IServiceCollection services)
         {
