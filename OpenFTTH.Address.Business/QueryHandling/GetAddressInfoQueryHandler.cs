@@ -92,7 +92,7 @@ namespace OpenFTTH.Address.Business.QueryHandling
 
             foreach (var addressSearchItem in addressSearchResult)
             {
-                if (addressSearchItem.Item1 != 0)
+                if (addressSearchItem.Item1 >= 0)
                 {
                     hits.Add(new AddressHit()
                     {

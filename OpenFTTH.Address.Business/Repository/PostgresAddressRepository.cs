@@ -187,7 +187,7 @@ namespace OpenFTTH.Address.Business.Repository
                     if (addressHit.Item2 is AccessAddress)
                         result.Add(addressHit.Item2.Id, (accessAddressDistanceById[addressHit.Item2.Id], addressHit.Item2));
                     else
-                        result.Add(addressHit.Item2.Id, (0, addressHit.Item2));
+                        result.Add(addressHit.Item2.Id, (-1, addressHit.Item2));
                 }
             }
 
