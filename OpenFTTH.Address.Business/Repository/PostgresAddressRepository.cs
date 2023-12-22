@@ -121,13 +121,15 @@ namespace OpenFTTH.Address.Business.Repository
 
                 if (unitAddressId != null && !addressHitById.ContainsKey(unitAddressId.Value))
                 {
-                    var ua = new UnitAddress(unitAddressId.Value, accessAddressId)
-                    {
-                        ExternalId = rdr.IsDBNull(12) ? null : Guid.Parse(rdr.GetString(12)),
-                        FloorName = rdr.IsDBNull(13) ? null : rdr.GetString(13),
-                        SuitName = rdr.IsDBNull(14) ? null : rdr.GetString(14)
-                    };
+                    var ua = new UnitAddress(
+                        unitAddressId.Value,
+                        accessAddressId,
+                        rdr.IsDBNull(12) ? null : Guid.Parse(rdr.GetString(12)),
+                        rdr.IsDBNull(13) ? null : rdr.GetString(13),
+                        rdr.IsDBNull(14) ? null : rdr.GetString(14)
+                        );
 
+                 
                     if (accessOrUnitAddressIdsLookup.Contains(accessAddressId))
                         addressHitById.Add(ua.Id, (Guid.Empty, ua));
                     else if (accessAddressExternalId != null && accessOrUnitAddressIdsLookup.Contains(accessAddressExternalId.Value))
@@ -269,12 +271,13 @@ namespace OpenFTTH.Address.Business.Repository
 
                 if (!addressHitById.ContainsKey(unitAddressId))
                 {
-                    var ua = new UnitAddress(unitAddressId, accessAddressId)
-                    {
-                        ExternalId = rdr.IsDBNull(12) ? null : Guid.Parse(rdr.GetString(12)),
-                        FloorName = rdr.IsDBNull(13) ? null : rdr.GetString(13),
-                        SuitName = rdr.IsDBNull(14) ? null : rdr.GetString(14)
-                    };
+                    var ua = new UnitAddress(
+                        unitAddressId,
+                        accessAddressId,
+                        rdr.IsDBNull(12) ? null : Guid.Parse(rdr.GetString(12)),
+                        rdr.IsDBNull(13) ? null : rdr.GetString(13),
+                        rdr.IsDBNull(14) ? null : rdr.GetString(14)
+                    );
 
                     if (accessOrUnitAddressIdsLookup.Contains(ua.Id))
                         addressHitById.Add(unitAddressId, (ua.Id, ua));
